@@ -219,8 +219,6 @@ MTEB 模型可以根据其性能-速度权衡大致分为三类：
 | **加速迭代/蒸馏版**       | BGE-Large → BGE-Base   | 社区脚本完善，可快速产出 baseline                     | - 用自家 Hard-neg triplets 做二次精调                            |
 | **实验室教/学用途**       | BERT-Large-SBERT       | CPU 也能跑，便于教学演示                              | - 仅用于 baseline 对照                                           |
 
-Certainly, let's integrate these sections into a cohesive and comprehensive document, focusing on clear, logical flow and maintaining a professional, authoritative tone.
-
 ### 3.2 文本嵌入模型优化核心策略
 
 本节将深入探讨优化文本嵌入模型的关键技术，包括负样本采样、模型蒸馏、参数高效微调、指令精调以及数据策略与增强，这些都是在 MTEB 排行榜上取得突破性表现的基石。
