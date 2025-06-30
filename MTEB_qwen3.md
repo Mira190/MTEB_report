@@ -1,6 +1,6 @@
 ## Qwen3 Embedding 模型概述
 
-Qwen3 Embedding 系列模型在文本嵌入和重排序领域取得了重大进展，它们的核心基于强大的 Qwen3 大型语言模型（LLMs）。本文讲详细介绍 Qwen3 Embedding 模型及微调指南。
+Qwen3 Embedding 系列模型在文本嵌入和重排序领域取得了重大进展，它们的核心基于强大的 Qwen3 大型语言模型（LLMs）。本文将简要介绍 Qwen3 Embedding 模型及微调指南。
 
 ### 模型系列与核心特性
 
