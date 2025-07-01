@@ -15,3 +15,6 @@ https://www.bilibili.com/video/BV1YLE1zyEvX/?spm_id_from=333.337.search-card.all
 
 llm 资源库-相关技术原理以及实战经验
 https://github.com/liguodongiot/llm-action
+
+内卷群友整理的 AI 飞书库
+https://si03vpk69ba.feishu.cn/docx/Hs7UdayzEom2fLxcJnFccgKenvg
