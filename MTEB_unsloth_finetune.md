@@ -619,80 +619,82 @@ eval_logger.log_summary()
 假设您已经安装了 EvalScope (`pip install evalscope`)，以下是一个概念性的集成示例：
 
 ```python
-# 您需要根据EvalScope的实际API和您的具体评估流程来调整此代码。
-# from evalscope.models import register_model
-# from evalscope.datasets import register_dataset
-# from evalscope.metrics import register_metric
-# from evalscope.evaluator import Evaluator
-# from unsloth import FastLanguageModel, prepare_inference
-# from datasets import load_dataset # 假设你的评估数据来自这里
+from evalscope.models import register_model
+from evalscope.datasets import register_dataset
+from evalscope.metrics import register_metric
+from evalscope.evaluator import Evaluator
+from unsloth import FastLanguageModel, prepare_inference
+from datasets import load_dataset  # 示例数据来源
 
-# 1. 定义您的 Qwen3 模型接口 (EvalScope注册模型的方式可能不同，这只是一个概念)
-# @register_model("qwen3_fine_tuned_evalscope")
-# class Qwen3FineTunedModelForEvalScope:
-#     def __init__(self, model_path: str, max_seq_length: int = 2048, load_in_4bit: bool = True):
-#         self.model, self.tokenizer = FastLanguageModel.from_pretrained(
-#             model_name=model_path,
-#             max_seq_length=max_seq_length,
-#             load_in_4bit=load_in_4bit,
-#         )
-#         prepare_inference(self.model)
+# 1. 定义 Qwen3 模型接口（EvalScope 注册模型的方式可能会不同，仅作示例）
+@register_model("qwen3_fine_tuned_evalscope")
+class Qwen3FineTunedModelForEvalScope:
+    def __init__(self, model_path: str, max_seq_length: int = 2048, load_in_4bit: bool = True):
+        self.model, self.tokenizer = FastLanguageModel.from_pretrained(
+            model_name=model_path,
+            max_seq_length=max_seq_length,
+            load_in_4bit=load_in_4bit,
+        )
+        prepare_inference(self.model)
 
-#     def generate(self, prompt: str, **kwargs) -> str:
-#         inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)["input_ids"]
-#         outputs = self.model.generate(inputs, **kwargs)
-#         return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+    def generate(self, prompt: str, **kwargs) -> str:
+        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)["input_ids"]
+        outputs = self.model.generate(inputs, **kwargs)
+        return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-# 2. 定义您的评估数据集接口 (EvalScope注册数据集的方式可能不同)
-# @register_dataset("my_qwen3_eval_dataset_evalscope")
-# class MyQwen3EvalDatasetForEvalScope:
-#     def __init__(self, dataset_name: str, split: str = "validation"):
-#         self.data = load_dataset(dataset_name, split=split)
-#         # 确保数据格式符合EvalScope的期望，例如列表字典，每个字典有'prompt'和'reference'
-#         self.formatted_data = [{"prompt": item["instruction"] + "\n\n" + item["input"], "reference": item["output"]} for item in self.data]
+# 2. 定义评估数据集接口（EvalScope 注册数据集的方式可能会不同，仅作示例）
+@register_dataset("my_qwen3_eval_dataset_evalscope")
+class MyQwen3EvalDatasetForEvalScope:
+    def __init__(self, dataset_name: str, split: str = "validation"):
+        self.data = load_dataset(dataset_name, split=split)
+        # 确保数据格式符合 EvalScope 的要求，例如列表字典，每个字典包含 'prompt' 和 'reference'
+        self.formatted_data = [
+            {"prompt": item["instruction"] + "\n\n" + item["input"], "reference": item["output"]}
+            for item in self.data
+        ]
 
-#     def __len__(self):
-#         return len(self.formatted_data)
+    def __len__(self):
+        return len(self.formatted_data)
 
-#     def __getitem__(self, idx):
-#         return self.formatted_data[idx]
+    def __getitem__(self, idx):
+        return self.formatted_data[idx]
 
-# 3. 定义自定义评估指标 (EvalScope注册指标的方式可能不同)
-# @register_metric("my_llm_judge_metric")
-# def my_llm_judge_metric(predictions: list[str], references: list[str]) -> dict:
-#     # 这是一个概念性的LLM作为裁判的指标
-#     # 实际实现会涉及调用一个强大的LLM API (如GPT-4o) 来对每个预测和参考进行评分
-#     scores = []
-#     for pred, ref in zip(predictions, references):
-#         # 假设这里调用一个外部LLM服务来判断正确性
-#         # judge_result = call_gpt4o_as_judge(pred, ref)
-#         # scores.append(1 if judge_result["is_correct"] else 0)
-#         scores.append(1 if pred.strip().lower() == ref.strip().lower() else 0) # 简化示例
-#     return {"llm_judge_accuracy": sum(scores) / len(scores)}
+# 3. 定义自定义评估指标（EvalScope 注册指标的方式可能会不同，仅作示例）
+@register_metric("my_llm_judge_metric")
+def my_llm_judge_metric(predictions: list[str], references: list[str]) -> dict:
+    # 概念性 LLM 裁判指标
+    # 实际实现可能调用一个强大的 LLM API（如 GPT-4o）来逐对评分
+    scores = []
+    for pred, ref in zip(predictions, references):
+        # 例如调用外部 LLM 服务判断正确性
+        # judge_result = call_gpt4o_as_judge(pred, ref)
+        # scores.append(1 if judge_result["is_correct"] else 0)
+        scores.append(1 if pred.strip().lower() == ref.strip().lower() else 0)  # 简化示例
+    return {"llm_judge_accuracy": sum(scores) / len(scores)}
 
-# 4. 运行评估 (EvalScope评估器使用方式可能不同)
-# if __name__ == "__main__":
-#     model_path = "qwen3_lora_fine_tuned" # 你保存的模型路径
-#     dataset_name = "yahma/alpaca-cleaned" # 你用于评估的数据集
-#     eval_output_dir = "./evalscope_qwen3_results"
+# 4. 运行评估（EvalScope 评估器的用法可能会不同，仅作示例）
+if __name__ == "__main__":
+    model_path = "qwen3_lora_fine_tuned"  # 模型保存路径
+    dataset_name = "yahma/alpaca-cleaned"  # 用于评估的数据集
+    eval_output_dir = "./evalscope_qwen3_results"
 
-#     # 实例化模型和数据集 (EvalScope可能有自己的加载机制)
-#     # qwen3_model = Qwen3FineTunedModelForEvalScope(model_path)
-#     # eval_dataset = MyQwen3EvalDatasetForEvalScope(dataset_name, split="test") # 假设有测试集
+    # 实例化模型和数据集
+    qwen3_model = Qwen3FineTunedModelForEvalScope(model_path)
+    eval_dataset = MyQwen3EvalDatasetForEvalScope(dataset_name, split="test")
 
-#     # 初始化评估器 (EvalScope的Evaluator类和参数会有差异)
-#     # evaluator = Evaluator(
-#     #     model=qwen3_model,
-#     #     dataset=eval_dataset,
-#     #     metrics=["bleu", "rouge", "my_llm_judge_metric"], # 使用内置和自定义指标
-#     #     output_dir=eval_output_dir,
-#     #     evaluation_config={
-#     #         "generation_kwargs": {"max_new_tokens": 50, "temperature": 0.7, "do_sample": True},
-#     #         # 更多配置，如批处理大小、并发请求等
-#     #     }
-#     # )
-#     # evaluator.run()
-#     # print(f"EvalScope 评估完成，报告已生成在 {eval_output_dir}")
+    # 初始化评估器
+    evaluator = Evaluator(
+        model=qwen3_model,
+        dataset=eval_dataset,
+        metrics=["bleu", "rouge", "my_llm_judge_metric"],
+        output_dir=eval_output_dir,
+        evaluation_config={
+            "generation_kwargs": {"max_new_tokens": 50, "temperature": 0.7, "do_sample": True},
+        }
+    )
+    evaluator.run()
+    print(f"EvalScope 评估完成，报告已生成在 {eval_output_dir}")
+
 
 ```
 
