@@ -34,33 +34,7 @@
 2. **数据格式转换**
    确保 AILAStatutes 数据符合 Qwen3 Embedding 微调所需格式，通常是查询–文档对，带有相关性标签。
 
-### 示例：原始与目标格式转换
-
-#### 原始 AILAStatutes 格式（JSONL）
-
-- **corpus.jsonl**（法规条文库）
-
-  ```json
-  {
-    "id": "statute_001",
-    "title": "合同法 第十条",
-    "text": "当事人应当根据合同的性质和目的，履行诚信原则。"
-  }
-  ```
-
-- **queries.jsonl**（检索查询）
-
-  ```json
-  { "id": "q_007", "query": "合同履行必须遵循什么原则？" }
-  ```
-
-- **qrels**（相关性标注，query – doc – label，label ∈ {0,1,2}）
-
-  ```tsv
-  q_007  statute_001  2
-  q_007  statute_015  1
-  q_007  statute_123  0
-  ```
+### 示例：目标格式转换
 
 #### 目标微调格式示例
 
