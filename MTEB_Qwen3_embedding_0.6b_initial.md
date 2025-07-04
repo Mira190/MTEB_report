@@ -4,7 +4,7 @@
 **模型路径**：`/mnt/volume1/shared/models/Qwen3-Embedding-0.6B`
 **评估任务**：AILAStatutes（法律条文检索）
 **硬件环境**：NVIDIA GeForce RTX 5090, CUDA
-**批大小**：8
+**批大小**：4
 **运行时间**：约 5.15 秒
 
 ## 1. 原始 JSON 结果

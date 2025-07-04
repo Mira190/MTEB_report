@@ -6,7 +6,7 @@
 | **模型路径** | `/mnt/volume1/shared/models/hub/Qwen3/Qwen3-Embedding-8B` |
 | **评估任务** | AILAStatutes（法律条文检索）                              |
 | **硬件环境** | NVIDIA GeForce RTX 5090 · CUDA                            |
-| **批大小**   | _未明确（可补充）_                                        |
+| **批大小**   | 1                                                         |
 | **运行时间** | ≈ 750 秒                                                  |
 
 ---
