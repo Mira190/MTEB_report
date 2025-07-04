@@ -1,4 +1,4 @@
-# RTX 5090 本地部署 Qwen3-Embedding 模型初始分数
+# RTX 5090 本地部署 Qwen3-Embedding 0.6B 模型初始分数
 
 **评估平台**：MTEB v1.38.33
 **模型路径**：`/mnt/volume1/shared/models/Qwen3-Embedding-0.6B`
