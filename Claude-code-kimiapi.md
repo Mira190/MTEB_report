@@ -1,6 +1,6 @@
 # Claude Code 原生运行 + 接入 Kimi K2（Windows / macOS / Linux ｜无需 WSL）
 
-## 一分钟速看：Claude Code 接入 Kimi（简化版）
+## 一分钟速看：Claude Code 接入 Kimi api
 
 1. 安装 Node.js ≥18（Windows 用 MSI，macOS 用 Homebrew）。
 2. 验证安装：`node -v`、`npm -v`。
@@ -44,7 +44,7 @@ claude --model kimi-k2-0711-preview
 
 ## 2. 获取 Kimi API Key（CN / AI 区域）
 
-1. 打开 Kimi 平台控制台：`platform.moonshot.cn/console/api`（若你在境外、官方提供 Global 域，请使用对应国际站入口）。
+1. 打开 Kimi 平台控制台：`platform.moonshot.cn/console/api`（
 2. 登录或注册账号。
 3. 进入 **API Key 管理 → 新建 API Key**。
 4. 复制生成的 `sk-...`（关闭窗口后无法再查看；丢失可重建）。
@@ -67,8 +67,6 @@ Claude Code CLI 依赖 Node 环境。
    npm -v
    ```
 
-> 可选：安装 _nvm-windows_ 做多版本管理，但非必需。
-
 ### macOS（Homebrew 最方便）
 
 ```bash
@@ -76,8 +74,6 @@ brew update
 brew install node
 node -v && npm -v
 ```
-
-如需多版本：安装 `nvm`，按需切换。
 
 ### Linux（Ubuntu 示例；其他发行版见注）
 
@@ -88,19 +84,11 @@ sudo apt update
 sudo apt install -y nodejs npm
 ```
 
-**推荐（NodeSource 最新 LTS）：**
-
-````bash
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-sudo apt install -y nodejs
-
----
-
 ## 4. 安装 Claude Code CLI
 
 ```bash
 npm install -g @anthropic-ai/claude-code
-````
+```
 
 初始化（生成默认配置文件）：
 
